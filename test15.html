@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Summary Debate</title>
+<style>
+  /* General body styles */
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8; /* Fond très clair */
+    color: #333333; /* Texte noir */
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Main container styling */
+  .container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #fafafa; /* Blanc cassé */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Title styles */
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+    color: #694f6c; /* Mauve */
+  }
+  
+  /* Mode label styles */
+  .mode-label {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #a68ba0; /* Mauve */
+    display: block;
+  }
+  
+  /* Radio button label styles */
+  .radio-button {
+    padding: 8px 16px;
+    border-radius: 30px;
+    background-color: #fafafa; /* Blanc cassé */
+    color: #694f6c; /* Mauve */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  /* Selected radio button label styles */
+  .radio-button.selected {
+    background-color: #a68ba0; /* Mauve */
+    color: white;
+  }
+
+  /* Textarea styles */
+  textarea {
+    width: calc(100% - 40px);
+    height: 200px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #ffffff; /* Blanc */
+    color: #333333; /* Texte noir */
+    border: 1px solid #dcdcdc; /* Gris clair */
+    border-radius: 6px;
+    resize: none;
+  }
+  
+  /* Button styles */
+  button {
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: #fafafa; /* Blanc cassé */
+    color: #694f6c; /* Mauve */
+  }
+
+  button:hover {
+    background-color: #a68ba0; /* Mauve au survol */
+    color: white; /* Texte blanc */
+  }
+
+  /* Upload button container styles */
+  .upload-btn-container {
+    margin-top: 10px;
+    position: relative;
+    text-align: right;
+  }
+
+  /* Positioning upload button inside the textarea */
+  #upload-button {
+    position: absolute;
+    top: 175px;
+    right: 2px;
+  }
+
+  /* Clear button container styles */
+  #clear-btn-container {
+    margin-top: 10px;
+    position: relative;
+    text-align: right;
+  }
+
+  /* Positioning clear button inside the textarea */
+  #clear-button {
+    position: absolute;
+    top: 175px; /* Adjust this value to move the button down */
+    right: 11px;
+  }
+
+  /* Style for the Summarize button */
+  #summarize-button {
+    padding: 12px 24px;
+    border: none;
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    background-color: #fafafa; /* Blanc cassé */
+    color: #694f6c; /* Mauve */
+    margin-top: 10px;
+    position: absolute;
+    top: 165px;
+    left: 20px;
+  }
+
+  #summarize-button:hover {
+    background-color: #a68ba0; /* Mauve au survol */
+    color: white; /* Texte blanc */
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <span class="title">AI Summary Debate</span>
+  <div class="mode-label">Mode:</div>
+  <label class="radio-button">
+    <input type="radio" name="summaryType" value="paragraph" checked> Paragraph
+  </label>
+  <label class="radio-button">
+    <input type="radio" name="summaryType" value="bullet"> Bullet Points
+  </label>
+  <br><br>
+  <div class="upload-btn-container">
+    <textarea id="input-text-area" placeholder="Enter your debate..."></textarea>
+    <button id="upload-button" onclick="document.getElementById('upload-file').click();">Upload Doc</button>
+    <input type="file" id="upload-file" style="position: absolute; opacity: 0; pointer-events: none;">
+    <!-- New Summarize button added here -->
+    <button id="summarize-button">Summarize</button>
+  </div>
+  <div id="clear-btn-container">
+    <button id="clear-button">Clear</button>
+  </div>
+  <textarea id="output-text-area" readonly></textarea>
+  <div class="footer">
+    Powered by YourAI™ | Privacy Policy | Terms of Service
+  </div>
+</div>
+
+<script>
+  // Clear and Summarize buttons functionality
+  document.getElementById('clear-button').addEventListener('click', function() {
+    document.getElementById('output-text-area').value = '';
+  });
+
+  document.getElementById('summarize-button').addEventListener('click', function() {
+    // Replace the content of the first textarea with "SUMMARIZE"
+    document.getElementById('input-text-area').value = "SUMMARIZE";
+    
+    // Clear output textarea
+    document.getElementById('output-text-area').value = '';
+  });
+
+  // Radio button style change logic
+  document.querySelectorAll('input[name="summaryType"]').forEach(function(radioButton) {
+    radioButton.addEventListener('change', function() {
+      document.querySelectorAll('.radio-button').forEach(function(label) {
+        label.classList.remove('selected');
+      });
+      if (this.checked) {
+        this.parentElement.classList.add('selected');
+      }
+    });
+  });
+
+  // Apply initial selected state styling on load
+  window.addEventListener('DOMContentLoaded', (event) => {
+    const checkedButton = document.querySelector('input[name="summaryType"]:checked');
+    if (checkedButton) {
+      checkedButton.parentElement.classList.add('selected');
+    }
+  });
+</script>
+</body>
+</html>
